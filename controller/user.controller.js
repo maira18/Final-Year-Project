@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose=require('mongoose');
 const accountSid = 'ACdf2c5ed770966c679f854007dd7aef0f';
 const authToken = '588bb60a6357307aa700e78d1053e37a';
-const client = require('twilio')(accountSid, authToken);
-const router = express.Router();
 const User = require('../model/user.model');
+const RegisterUser=require('../model/registeredUsers.model');
+const RegUserModel=mongoose.model('RegisterUser');
 const UserModel=mongoose.model('User');
 
 /* GET home page. */
@@ -12,55 +12,65 @@ exports.test = function (req, res) {
     res.send('Greetings from the Test controller!');
 };
 
-exports.sendSms=(req,res) => {
-    UserModel.find((err,docs)=>{
-        if(!err)
+exports.sendSms= async (req, res) => {
+    await UserModel.find({'userNumber': req.body.contact}, async function (err, docs) {
+        if (!err)
         {
-            var contact=docs[0];
-            var json=contact.toJSON();
-            var number=json.contact;
-            console.log(number);
-            console.log(typeof number);
+            let contact = docs[0];
+            let json = contact.toJSON();
+            let number = json.userNumber;
 
-            const minm = 10000;
-            const maxm = 99999;
-            code = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
+            const minm = 100000;
+            const maxm = 999999;
+            let code = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
             try {
-                client.messages.create({
-                    body: `Your 2-Factor authentication code is: ${code}, If you did not request this please contact the DoctorNow support team immediately.\r\rThanks,\r\rDoctorNow Support`,
-                    to: number,
+                const client = await require('twilio')(accountSid, authToken);
+                const msg= await client.messages.create({
+                    body: 'Hi your 2 factor authentication code is :' + code,
+                    to: `+` + number,
                     from: '+19252415625',
-                })
-                    .then(message => console.log(message.sid));
-                //.done();
-            }
-            catch (e) {
+                });
+                console.log(msg);
+                    //.then(message => console.log(message.sid));
+            } catch (e) {
                 console.log('error in sending message from twilio => ', e);
             }
-            res.send("Send");
-        }
-        else
-        {
-            res.send("ERROR");
+            res.send({"code": code});
+        } else {
+            console.log("ERROR");
         }
     });
 };
 
-exports.createUser=(req,res)=>{
-    console.log(req.body);
-    //res.send({"status":"200","payload":{"message":"hello"}});
-    let db = mongoose.connection;
-    new User({
-        name: req.body.name,
-        contact: req.body.contact
-    }).save(function(err,doc){
-        if(err) res.json(err);
-        else res.send({"status":"200","payload":{"message":"hello"}});
+exports.createUser= async (req, res) => {
+
+    await RegUserModel.find({'userNumber': req.body.contact}, function (err, docs) {
+        if(docs.length>0){
+            console.log("Number already registered");
+            res.send({"status": 400});
+        }
+
     });
-    // let user = new User(data);
-    // console.log("insert");
-    // db.collection('users').insertOne(user, (err, data) => {
-    //     if (err) return console.log(err);
-    //     res.send(('saved to db: ' + data));
-    // })
+
+    const test = await UserModel.create({
+        userName: req.body.name,
+        userNumber: req.body.contact,
+    });
+    if (test) {
+        res.send({"status": 200});
+    } else
+        res.send({"message": test});
+};
+
+exports.registerUser=(req,res)=>{
+    const test = RegUserModel.create({
+        userName: req.body.name,
+        userNumber: req.body.contact,
+    });
+    if (test) {
+        const delTest=UserModel.deleteMany({"userNumber":"req.body.contact"});
+
+        res.send({"status": 200});
+    } else
+        res.send({"message": test});
 };

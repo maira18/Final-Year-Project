@@ -16,21 +16,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//app.use(session);
 app.use('/user',userRoutes);
 app.use(bodyparser.urlencoded({
   extended:true
 }));
-
-// route.route('/add').post(function(req,res){
-//   let user = new User(req.body);
-//   console.log("insert");
-//   user.save().then(user=>{
-//     console.log("inside ");
-//     res.status(200).json({'todo':'todo added successfuly'});
-//   }).catch(err=>{
-//     res.status(400).send('adding new todo failed');
-//   });
-// });
 
 app.get('/',function(req,res){
   console.log("hello");

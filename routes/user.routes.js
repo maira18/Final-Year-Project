@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/test', userController.test);
-router.get ('/sendSms',userController.sendSms);
+router.post('/sendSms',userController.sendSms);
 router.post('/add', userController.createUser);
-
+router.post('/registerUser',userController.registerUser);
 module.exports = router;
