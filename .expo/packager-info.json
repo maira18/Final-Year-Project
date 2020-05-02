@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 19756,
-  "expoServerNgrokUrl": "https://ky-rmk.maira18.myproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.ky-rmk.maira18.myproject.exp.direct",
-  "ngrokPid": 15468,
+  "packagerPid": 17248,
+  "expoServerNgrokUrl": "https://p8-hrt.maira18.myproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.p8-hrt.maira18.myproject.exp.direct",
+  "ngrokPid": 2684,
   "webpackServerPort": 19006
 }

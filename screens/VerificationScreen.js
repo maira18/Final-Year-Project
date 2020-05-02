@@ -4,9 +4,23 @@ import {Alert, Text, View, TouchableOpacity, ImageBackground,} from 'react-nativ
 import CodeFiled from 'react-native-confirmation-code-field';
 
 export default class VerificationScreen extends Component {
+
+    constructor(props){
+        super(props);
+        this.saveAndNex=this.saveAndNext.bind(this);
+        this.state={
+            sendCode:'',
+            code:'',
+            name:'',
+            contact:''
+        };
+    }
     checkingCode = code => {
-        if (code !== '123456') {
-            return Alert.alert(
+        this.state.sendCode=this.props.navigation.state.params.code.toString();
+        if (code !== this.state.sendCode) {
+            console.log(code);
+            console.log(sendCode);
+            Alert.alert(
                 'Confirmation Code',
                 'Code not match!',
                 [{text: 'OK'}],
@@ -15,10 +29,11 @@ export default class VerificationScreen extends Component {
                 },
             );
         }
-
-        Alert.alert('Confirmation Code', 'Successful!', [{text: 'OK'}], {
-            cancelable: false,
-        });
+        else{
+            Alert.alert('Confirmation Code', 'Successful!', [{text: 'OK',onPress: () => this.saveAndNext()}], {
+                cancelable: false,
+            });
+        }
     };
 
     cellProps = ({ /*index, isFocused,*/ hasValue}) => {
@@ -32,9 +47,30 @@ export default class VerificationScreen extends Component {
         };
     };
 
-    goHome=()=>{
-        this.props.navigation.navigate("Home");
+    async saveAndNext()
+    {
+        this.state.contact=this.props.navigation.state.params.contact.toString();
+        this.state.name=this.props.navigation.state.params.name.toString();
+        var url = 'http://192.168.10.10:3000/user/registerUser';
+        const data = {
+            name: this.state.name,
+            contact: this.state.contact
+        }
+        let res=await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        let resData=await res.json();
+        if(resData.status==200)
+        {
+            console.log("user registered");
+            this.props.navigation.navigate("Home");
+        }
     }
+
     containerProps = {style: styles.inputWrapStyle};
 
     render() {
@@ -58,6 +94,7 @@ export default class VerificationScreen extends Component {
                             keyboardType="numeric"
                             cellProps={this.cellProps}
                             containerProps={this.containerProps}
+                            onChangeText={(text) => this.setState({code:text})}
                             onFulfill={this.checkingCode}
                         />
                         <View>

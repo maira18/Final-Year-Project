@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import axios from 'axios';
-
 
 export default class RegisterScreen extends Component {
     constructor(props){
@@ -19,17 +17,16 @@ export default class RegisterScreen extends Component {
         this.goNext=this.goNext.bind(this);
         this.state={
             name:'',
-            contact:''
+            contact:'',
+            code:'',
         };
     }
 
-
     async dataPost(){
-        
         console.log(this.state.name,this.state.contact);
         if((this.state.name)!=="" && (this.state.contact)!=="" ){
         
-            var url = 'http://192.168.10.12:3000/user/add';
+            var url = 'http://192.168.10.10:3000/user/add';
             const data = {
                 name: this.state.name,
                 contact: this.state.contact
@@ -41,19 +38,35 @@ export default class RegisterScreen extends Component {
                     'Content-Type': 'application/json'
                 },
             })
-            let resData=await res.json()
-            console.log(resData);
-            this.goNext();
+            let resData=await res.json();
+            if(resData.status==200){
+                url = 'http://192.168.10.10:3000/user/sendSms';
+                let res=await fetch(url, {
+                    method: 'POST',
+                    body:JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+                let resCode=await res.json();
+                this.state.code=resCode.code;
+                console.log(this.state.code);
+                this.goNext();
+            }
+            else
+            {
+                console.log("Number already registered");
+            }
         }
-        else{
+        else
+        {
             console.log("empty fields");
         }
     }
 
     goNext(){
-        this.props.navigation.navigate("Verify");
+        this.props.navigation.navigate("Verify",{code:this.state.code, contact:this.state.contact,name:this.state.name});
     }
-
         render() {
             return (
                 <View style={styles.root}>
