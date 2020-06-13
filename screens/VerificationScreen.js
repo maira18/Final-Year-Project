@@ -7,7 +7,7 @@ export default class VerificationScreen extends Component {
 
     constructor(props){
         super(props);
-        this.saveAndNex=this.saveAndNext.bind(this);
+        this.saveAndNext=this.saveAndNext.bind(this);
         this.state={
             sendCode:'',
             code:'',

@@ -10,28 +10,49 @@ import {
 } from "react-native";
 import HeaderHome from "../components/HeaderHome";
 import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
-function HomeScreen(props) {
+function HomeSentFrom(props) {
     return (
         <View style={styles.root}>
             {/*header*/}
+            {/* <View style={[styles.container, styles.headerX]}>
+                <View style={styles.rowIcon}>
+                    <TouchableOpacity
+                        style={styles.buttonProfile}
+                    >
+                        <MaterialIconsIcon
+                            name="menu"
+                            style={styles.iconProfile}
+                        ></MaterialIconsIcon>
+                    </TouchableOpacity>
+                    <Text style={styles.textProfile}>Home</Text>
+                </View>
+                <View style={styles.rowIcon2}></View>
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate("Profile")}
+                    style={styles.buttonProfile}
+                >
+                    <FontAwesomeIcon
+                        name="user-circle-o"
+                        style={styles.iconUser}
+                    ></FontAwesomeIcon>
+                </TouchableOpacity>
+            </View> */}
             <HeaderHome style={styles.headerX}></HeaderHome>
             {/*body*/}
             <View style={styles.body}>
                 <View style={styles.tabs}>
-                    <TouchableOpacity
-                        onPress={() => props.navigation.navigate('Home')}
-                        style={styles.available}>
+                    <TouchableOpacity style={styles.available}
+                        onPress={() => props.navigation.navigate('Home')}>
                         <Text style={styles.textAvailable}>Available</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.sharedTo}
-                    onPress={() => props.navigation.navigate('SentTo')}>
+                        onPress={() => props.navigation.navigate('SentTo')}>
                         <Text style={styles.textSharedTo}>Shared To</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.sharedFrom}
-                    onPress={() => props.navigation.navigate('SentFrom')}>
+                        onPress={() => props.navigation.navigate('SentFrom')}>
                         <Text style={styles.textSharedFrom}>Shared From</Text>
                     </TouchableOpacity>
                 </View>
@@ -40,17 +61,16 @@ function HomeScreen(props) {
                     <View style={styles.categories}>
                         <View style={styles.rowColumn}>
                             <View style={styles.rowCol1}>
-                                <TouchableOpacity style={styles.ribbonButton}
-                                    onPress={() => props.navigation.navigate('Gallery')}>
+                                <TouchableOpacity style={styles.ribbonButton}>
                                     <ImageBackground
-                                        source={require("../assets/images/dup.jpg")}
+                                        source={require("../assets/images/image5.jpg")}
                                         resizeMode="cover"
                                         style={styles.image}
                                     >
                                         <View style={styles.image}></View>
-                                        <Text style={styles.textCount}>23</Text>
+                                        <Text style={styles.textCount}>5</Text>
                                         <View style={styles.textView}>
-                                            <Text style={styles.textName}>MAIRA</Text>
+                                            <Text style={styles.textName}>Aqleema</Text>
                                         </View>
                                     </ImageBackground>
                                 </TouchableOpacity>
@@ -131,9 +151,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(247,247,247,0)",
         alignSelf: "center",
         opacity: 1,
-        borderRadius: 5,
-        borderColor: "rgba(0,0,0,1)",
-        borderWidth: 1
+        borderRadius: 100,
     },
     textAvailable: {
         color: "rgba(0,0,0,1)",
@@ -159,7 +177,9 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(247,247,247,0)",
         alignSelf: "center",
         opacity: 1,
-        borderRadius: 100,
+        borderRadius: 5,
+        borderColor: "rgba(0,0,0,1)",
+        borderWidth: 1
     },
     textSharedFrom: {
         color: "rgba(0,0,0,1)",
@@ -207,4 +227,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default HomeSentFrom;

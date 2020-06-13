@@ -11,7 +11,7 @@ function ProfileScreen(props) {
             {/*header*/}
             <View style={[styles.container, styles.headerX]}>
                 <View style={styles.iconRow}>
-                    <TouchableOpacity /* Conditional navigation not supported at the moment */
+                    <TouchableOpacity
                         onPress={() => props.navigation.navigate('Home')}
                         style={styles.button}
                     >

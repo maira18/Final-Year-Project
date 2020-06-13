@@ -6,6 +6,9 @@ import React from "react";
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
+import HomeSentTo from "./screens/HomeSentTo";
+import HomeSentFrom from "./screens/HomeSentFrom";
+import ImageGallery  from "./screens/ImageGallery";
 const RootStack = createStackNavigator(
     {
         Register: RegisterScreen,
@@ -13,6 +16,9 @@ const RootStack = createStackNavigator(
         Home: HomeScreen,
         Profile: ProfileScreen,
         Edit: EditProfileScreen,
+        SentTo: HomeSentTo,
+        SentFrom: HomeSentFrom,
+        Gallery: ImageGallery,
     },
     {
         initialRouteName: "Register",
